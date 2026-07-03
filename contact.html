@@ -527,7 +527,16 @@
                     </div>
                   </form>
                   <div class="success-message w-form-done">
-                    <div>Thank you! Your submission has been received!</div>
+                    <div class="form-success_inner">
+                      <svg class="form-success_icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="1.5" />
+                        <path d="M8 12.5L11 15.5L16 9.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                      </svg>
+                      <h3 class="heading-style-h4 margin-0">Message received</h3>
+                      <div class="text-size-small tone-medium">
+                        Thanks for reaching out to FlexDock LLC. Our Fort Worth team runs 24/7 and will get back to you shortly.
+                      </div>
+                    </div>
                   </div>
                   <div class="error-message w-form-fail">
                     <div>Oops! Something went wrong while submitting the form.</div>
@@ -887,23 +896,56 @@
       gsap.registerPlugin(ScrollTrigger, Flip, SplitText);
     </script>
     <script type="text/javascript">
-      /* Netlify Forms — native submission. Netlify captures the POST server-side and
-         redirects to the form's action (/success.html). No AJAX: this is Netlify's
-         recommended JS-free path, so there is no false "error" banner when the page is
-         opened off Netlify. The visible "Send request" button is a decorative <a>
-         layered over the real <input type="submit">, so bridge its click to a native
-         submit (Webflow's own handler stays out of the way because the form has a
-         relative action). */
+      /* Netlify Forms — inline submission. Submit over fetch so Netlify captures the
+         POST server-side (email notification fires) while the visitor stays on the page
+         and can keep scrolling: the form is swapped for an inline "Message received"
+         note, no full-page redirect. The visible "Send request" button is a decorative
+         <a> over the real <input type="submit">, so bridge its click to a validated
+         submit. Capture phase + stopImmediatePropagation keeps Webflow's own handler
+         (which would post to Webflow's servers) out of the way.
+         NOTE: this only succeeds on the deployed Netlify site — opening the page from a
+         plain static host/tunnel will show the error note because nothing captures the POST. */
       (function () {
         var form = document.getElementById("email-form");
         if (!form) return;
+        var wrap = form.parentNode;
+        var done = wrap.querySelector(".w-form-done");
+        var fail = wrap.querySelector(".w-form-fail");
+
+        form.addEventListener(
+          "submit",
+          function (e) {
+            e.preventDefault();
+            e.stopImmediatePropagation();
+            var body = new URLSearchParams(new FormData(form)).toString();
+            fetch("/", {
+              method: "POST",
+              headers: { "Content-Type": "application/x-www-form-urlencoded" },
+              body: body,
+            })
+              .then(function (r) {
+                if (!r.ok) throw new Error("status " + r.status);
+                form.style.display = "none";
+                if (fail) fail.style.display = "none";
+                if (done) done.style.display = "block";
+              })
+              .catch(function () {
+                if (fail) fail.style.display = "block";
+              });
+          },
+          true
+        );
+
         var cta = form.querySelector("a.cta-main");
-        if (!cta) return;
-        cta.addEventListener("click", function (e) {
-          e.preventDefault();
-          if (form.requestSubmit) form.requestSubmit();
-          else form.submit();
-        });
+        if (cta)
+          cta.addEventListener("click", function (e) {
+            e.preventDefault();
+            if (form.requestSubmit) form.requestSubmit();
+            else {
+              if (form.reportValidity && !form.reportValidity()) return;
+              form.dispatchEvent(new Event("submit", { cancelable: true }));
+            }
+          });
       })();
     </script>
     <style>
@@ -917,6 +959,23 @@
       }
       .button_submit-static .button-text {
         text-shadow: none !important;
+      }
+      /* Inline confirmation shown in place of the form (no green Webflow box, no redirect) */
+      .form-block_contact .w-form-done {
+        background: transparent;
+        padding: 1rem 0;
+      }
+      .form-success_inner {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        gap: 0.85rem;
+      }
+      .form-success_icon {
+        width: 56px;
+        height: 56px;
+        color: #22c55e;
       }
     </style>
   </body>
