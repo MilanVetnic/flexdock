@@ -143,6 +143,19 @@
         });
       })();
     </script>
+  <style data-ios-bgvideo-fix>
+    /* iOS Safari refuses to paint a background <video> at negative z-index — both
+       the video and its poster vanish, leaving a grey hero. Lift the video onto a
+       non-negative layer and stack the tint + content above it so iOS composites it. */
+    .video_about-b > video,
+    .video_cta > video { z-index: 0; }
+    .video_about-b > .overlay_semi-transparent,
+    .video_cta > .overlay_semi-transparent { z-index: 1; }
+    .video_about-b > .padding-global,
+    .video_cta > .padding-global { position: relative; z-index: 2; }
+    .video_about-b > [aria-live],
+    .video_cta > [aria-live] { z-index: 2; }
+  </style>
 </head>
 <body>
   <div class="page-wrapper">
@@ -261,7 +274,7 @@
       </div>
     <main class="main-wrapper">
       <section class="section_hero-about-b">
-        <div data-poster-url="videos/2530273-uhd_3840_2160_24fps-1_poster.0000000.jpg" data-video-urls="videos/2530273-uhd_3840_2160_24fps-1_mp4.mp4,videos/2530273-uhd_3840_2160_24fps-1_webm.webm" data-autoplay="true" data-loop="true" data-wf-ignore="true" class="video_about-b w-background-video w-background-video-atom"><video id="a89d3734-1b76-79e1-3ab1-b8956aa4cbd9-video" autoplay="" loop="" poster="videos/2530273-uhd_3840_2160_24fps-1_poster.0000000.jpg" style="background-image:url(&quot;videos/2530273-uhd_3840_2160_24fps-1_poster.0000000.jpg&quot;)" muted="" playsinline="" data-wf-ignore="true" data-object-fit="cover">
+        <div data-poster-url="videos/2530273-uhd_3840_2160_24fps-1_poster.0000000.jpg" data-video-urls="videos/2530273-uhd_3840_2160_24fps-1_mp4.mp4,videos/2530273-uhd_3840_2160_24fps-1_webm.webm" data-autoplay="true" data-loop="true" data-wf-ignore="true" style="background-image:url(&quot;videos/2530273-uhd_3840_2160_24fps-1_poster.0000000.jpg&quot;);background-size:cover;background-position:50% 50%" class="video_about-b w-background-video w-background-video-atom"><video id="a89d3734-1b76-79e1-3ab1-b8956aa4cbd9-video" autoplay="" loop="" poster="videos/2530273-uhd_3840_2160_24fps-1_poster.0000000.jpg" style="background-image:url(&quot;videos/2530273-uhd_3840_2160_24fps-1_poster.0000000.jpg&quot;)" muted="" playsinline="" data-wf-ignore="true" data-object-fit="cover">
             <source src="videos/2530273-uhd_3840_2160_24fps-1_mp4.mp4" data-wf-ignore="true">
             <source src="videos/2530273-uhd_3840_2160_24fps-1_webm.webm" data-wf-ignore="true">
           </video>
@@ -480,7 +493,7 @@
         </div>
       </section>
       <section light-mode="" class="section_cta">
-        <div data-poster-url="videos/2711306-uhd_3840_2160_24fps-1_poster.0000000.jpg" data-video-urls="videos/2711306-uhd_3840_2160_24fps-1_mp4.mp4,videos/2711306-uhd_3840_2160_24fps-1_webm.webm" data-autoplay="true" data-loop="true" data-wf-ignore="true" class="video_cta w-background-video w-background-video-atom"><video id="48f2989f-6f8c-5791-cd1e-8d08068e4b76-video" autoplay="" loop="" poster="videos/2711306-uhd_3840_2160_24fps-1_poster.0000000.jpg" style="background-image:url(&quot;videos/2711306-uhd_3840_2160_24fps-1_poster.0000000.jpg&quot;)" muted="" playsinline="" data-wf-ignore="true" data-object-fit="cover">
+        <div data-poster-url="videos/2711306-uhd_3840_2160_24fps-1_poster.0000000.jpg" data-video-urls="videos/2711306-uhd_3840_2160_24fps-1_mp4.mp4,videos/2711306-uhd_3840_2160_24fps-1_webm.webm" data-autoplay="true" data-loop="true" data-wf-ignore="true" style="background-image:url(&quot;videos/2711306-uhd_3840_2160_24fps-1_poster.0000000.jpg&quot;);background-size:cover;background-position:50% 50%" class="video_cta w-background-video w-background-video-atom"><video id="48f2989f-6f8c-5791-cd1e-8d08068e4b76-video" autoplay="" loop="" poster="videos/2711306-uhd_3840_2160_24fps-1_poster.0000000.jpg" style="background-image:url(&quot;videos/2711306-uhd_3840_2160_24fps-1_poster.0000000.jpg&quot;)" muted="" playsinline="" data-wf-ignore="true" data-object-fit="cover">
             <source src="videos/2711306-uhd_3840_2160_24fps-1_mp4.mp4" data-wf-ignore="true">
             <source src="videos/2711306-uhd_3840_2160_24fps-1_webm.webm" data-wf-ignore="true">
           </video>
