@@ -943,8 +943,8 @@ figcaption {
   justify-content: space-between;
   align-items: center;
   width: 100%;
-  height: 101vh;
-  max-height: 101vh;
+  height: auto;
+  max-height: none;
   display: flex;
   position: relative;
 }
@@ -1148,6 +1148,23 @@ figcaption {
   z-index: 999;
   position: fixed;
   inset: 0% 0% auto;
+}
+
+.nav-overlay {
+  z-index: 998;
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 0.4s ease, visibility 0.4s ease;
+}
+
+.nav-overlay.is-active {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
 }
 
 .master_navigation:where(.w-variant-c9557807-8e80-3b75-1707-7f7890f8d402), .master_navigation.dark-mode:where(.w-variant-c9557807-8e80-3b75-1707-7f7890f8d402) {
@@ -8055,6 +8072,9 @@ figcaption {
     position: relative;
     inset: auto;
   }
+  .wrap_contact-b-cards.image {
+    min-height: 400px;
+  }
 
   .form-b_halves {
     grid-column-gap: var(--spacing--48);
@@ -8066,6 +8086,9 @@ figcaption {
   }
   .contact-gmap .right_contact-a {
    min-height: 400px;
+  }
+  .headline_home-clients h2 {
+    text-wrap: balance;
   }
 
   .image-wrap_contact-b {
@@ -8100,7 +8123,7 @@ figcaption {
     grid-column-gap: var(--spacing--32);
     grid-row-gap: var(--spacing--32);
     flex-flow: row;
-    justify-content: space-between;
+    justify-content: flex-start;
     align-items: center;
   }
 
